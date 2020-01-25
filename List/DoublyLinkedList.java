@@ -18,7 +18,9 @@ public class DoublyLinkedList<E> implements Iterable<E> {
     public int getSize() {
         return size;
     }
-
+    public boolean isEmpty(){
+        return size==0;
+    }
     public void addFirst(E str) {
         DNode<E> temp = new DNode<>(str);
         if (size == 0) {
@@ -56,6 +58,13 @@ public class DoublyLinkedList<E> implements Iterable<E> {
             return;
         }
         DNode<E> temp = new DNode<E>(str);
+        if(index == size -1){
+            temp.setPrev(tail);
+            tail.setNext(temp);
+            tail = temp;
+            size++;
+            return;
+        }
         DNode<E> before;
         DNode<E> after;
         if (index < size / 2) {
@@ -79,7 +88,41 @@ public class DoublyLinkedList<E> implements Iterable<E> {
         temp.setNext(after);
         size++;
     }
-
+    public void addBefore(int index, E str){
+        if (index > size - 1 || index < 0) {
+            return;
+        }
+        DNode<E> temp = new DNode<E>(str);
+        if(index == 0){
+            temp.setNext(head);
+            head.setPrev(temp);
+            head = temp;
+            size++;
+            return;
+        }
+        DNode<E> before;
+        DNode<E> after;
+        if (index < size / 2) {
+            before = head;
+            after = head;
+            for (int i = 0; i < index; i++) {
+                after = after.getNext();
+            }
+            before = after.getPrev();
+        } else {
+            before = tail;
+            after = tail;
+            for (int i = size - index - 1; i > 0; i--) {
+                after = after.getPrev();
+            }
+            before = after.getPrev();
+        }
+        before.setNext(temp);
+        temp.setPrev(before);
+        after.setPrev(temp);
+        temp.setNext(after);
+        size++;
+    }
     public E get(int index) {
         if (index > size - 1 || index < 0) {
             return null;
@@ -134,6 +177,13 @@ public class DoublyLinkedList<E> implements Iterable<E> {
 
     public E removeFirst() {
         DNode<E> temp = head;
+        if(size == 1){
+            E res = temp.getElement();
+            head = null;
+            tail = null;
+            size--;
+            return res;
+        }
         head = head.getNext();
         head.setPrev(null);
         temp.setNext(null);
