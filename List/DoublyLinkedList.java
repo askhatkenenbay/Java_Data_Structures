@@ -54,6 +54,10 @@ public class DoublyLinkedList<E> implements Iterable<E> {
      * index
      */
     public void addAfter(int index, E str) {
+        if(size == 0){
+            addFirst(str);
+            return;
+        }
         if (index > size - 1 || index < 0) {
             return;
         }
@@ -89,17 +93,14 @@ public class DoublyLinkedList<E> implements Iterable<E> {
         size++;
     }
     public void addBefore(int index, E str){
+        if(index == 0){
+            addFirst(str);
+            return;
+        }
         if (index > size - 1 || index < 0) {
             return;
         }
         DNode<E> temp = new DNode<E>(str);
-        if(index == 0){
-            temp.setNext(head);
-            head.setPrev(temp);
-            head = temp;
-            size++;
-            return;
-        }
         DNode<E> before;
         DNode<E> after;
         if (index < size / 2) {
